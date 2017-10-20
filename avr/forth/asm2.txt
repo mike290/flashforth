@@ -30,10 +30,10 @@ flash ar: rules
                     \                        swap inc asr lsr ror dec
 [ 0f0.4 , f0f.4 , ] \ 0a xxxx.kkkk.dddd.kkkk cpi sbci subi ori andi ldi
 [ 0f0.4 , 00f.0 , ] \ 0b xxxx.xxxx.dddd.rrrr movw
-[ 1f0.4 , 20f.5 , ] \ 0c xxxx.xxrd.dddd.rrrr cpc cp sbc sub add adc cpse
+[ 1f0.4 , 007.0 , ]  \ 0d xxxx.xxxd.dddd.0rrr bld bst sbrc sbrs
+[ 1f0.4 , 20f.5 ,  \ 0c xxxx.xxrd.dddd.rrrr cpc cp sbc sub add adc cpse
                     \                        and eor or mov mul
                     \                        ( rol lsl tst clr ser )
-[ 1f0.4 , 007.0 ,   \ 0d xxxx.xxxd.dddd.0rrr bld bst sbrc sbrs
 \ 000.0 , 000.0 ,   \ 0f if then begin until again
 
 \ 126 opcodes opcode name ruleindex namelen
@@ -183,7 +183,7 @@ flash create ass , , , , , , , , , , , , ram
   dup f - 0= 
   if drop ask + @ex            \ handle flow control
   else
-    dup $c <
+    dup $d <
     if   dup 2* ass + @ex
     else r# r# asm             \ two params
     then i,
