@@ -1,0 +1,96 @@
+\ One example of each assembler mnemonic for compile
+\ testing and checking the resulting machine code.
+\
+\ It is not intended that these words are executed!
+\
+marker -chk
+\
+\ Find the code start for the following word
+: c-strt
+  bl word find      \ Find the code start
+  drop              \ Drop immediate flag 
+;
+
+\
+: chk
+  c-strt c>n dup    \ Get start of name field
+  @ $1f and 1+      \ Mask # characters
+  + aligned         \ Get start of code
+  hex
+  @ dup 4 u.r       \ Print the code
+  - if     \ If not zero codes don't match
+    ." WRONG CODE!"
+  else              \ Right code
+    ." chk!"
+  then
+;
+\ Assembler instruction Code Check
+: ret  as: ret ;        9508 chk ret
+: clc  as: clc ;        9488 chk clc
+: cli  as: cli ;        94f8 chk cli
+: sei  as: sei ;        9478 chk sei
+: sleep as: sleep ;     9588 chk sleep
+: bld  as: bld r24 7 ;  f987 chk bld
+: bst  as: bst r24 7 ;  fb87 chk bst
+: sbrc as: sbrc r24 4 ; fd84 chk sbrc
+: sbrs as: sbrs r24 6 ; ff86 chk sbrs
+: cbi  as: cbi $25 5 ;  982d chk cbi
+: sbi  as: sbi $25 5 ;  9a2d chk sbi
+: sbic as: sbic $23 4 ; 991c chk sbic
+: sbis as: sbis $23 3 ; 9b1b chk sbis
+: ldx  as: ld r26 x ;   91ac chk ldx
+: ldx+ as: ld r26 x+ ;  91ad chk ldx+
+: ld-x as: ld r26 -x ;  91ae chk ld-x
+: ldy  as: ld r26 y ;   81a8 chk ldy
+: ldy+ as: ld r26 y+ ;  91a9 chk ldy+
+: ld-y as: ld r26 -y ;  91aa chk ld-y
+: ldz  as: ld r26 z ;   81a0 chk ldz
+: ldz+ as: ld r26 z+ ;  91a1 chk ldz+
+: ld-z as: ld r26 -z ;  91a2 chk ld-z
+: stx  as: st x r26 ;   93ac chk stx
+: stx+ as: st x+ r26 ;  93ad chk stx+
+: st-x as: st -x r26 ;  93ae chk st-x
+: sty  as: st y r26 ;   93a8 chk sty
+: sty+ as: st y+ r26 ;  93a9 chk sty+
+: st-y as: st -y r26 ;  93aa chk st-y
+: stz  as: st z r26 ;   93a0 chk stz
+: stz+ as: st z+ r26 ;  93a1 chk stz+
+: st-z as: st -z r26 ;  93a2 chk st-z
+: adiw as: adiw r24 1 ; 9601 chk adiw
+: sbiw as: sbiw r24 1 ; 9701 chk sbiw
+: in  as: in r24 $5 ;   b185 chk in
+: out as: out $5 r24 ;  b985 chk out
+: lds as: lds r24 $60 ; 9180 chk lds
+: sts as: sts $60 r24 ; 9380 chk sts
+: pop  as: pop r24 ;    918f chk pop
+: push as: push r24 ;   938f chk push
+: com  as: com r24 ;    9580 chk com
+: neg  as: neg r24 ;    9581 chk neg
+: swa as: swap r24 ;    9582 chk swa
+: inc  as: inc r24 ;    9583 chk inc
+: asr  as: asr r24 ;    9585 chk asr
+: lsr  as: lsr r24 ;    9586 chk lsr
+: ror  as: ror r24 ;    9587 chk ror
+: dec  as: dec r24 ;    958a chk dec
+: cpi  as: cpi r24 9 ;  3089 chk cpi
+: sbci as: sbci r24 9 ; 4089 chk sbci
+: subi as: subi r24 9 ; 5089 chk subi
+: ori  as: ori r24 9 ;  6089 chk ori
+: andi as: andi r24 9 ; 7089 chk andi
+: ldi  as: ldi r24 9 ;  e089 chk ldi
+: movw as: movw r4 r2 ; 0121 chk movw
+: lsl  as: lsl r24 ;    0f88 chk lsl
+: rol  as: rol r24 ;    1f88 chk rol
+: tst  as: tst r24 ;    2388 chk tst
+: clr  as: clr r24 ;    2788 chk clr
+: mul  as: mul r2 r24 ; 9e28 chk mul
+: cpc  as: cpc r2 r24 ; 0628 chk cpc
+: add  as: add r2 r24 ; 0e28 chk add
+: cpse as: cpse r2 r4 ; 1024 chk cpse
+: cp   as: cp r24 r26 ; 178a chk cp
+: sub  as: sub r2 r24 ; 1a28 chk sub
+: adc  as: adc r2 r24 ; 1e28 chk adc
+: andx as: and r2 r24 ; 2228 chk andx
+: eor  as: eor r2 r24 ; 2628 chk eor
+: orx  as: or r24 r26 ; 2b8a chk orx
+: mov  as: mov r2 r24 ; 2e28 chk mov
